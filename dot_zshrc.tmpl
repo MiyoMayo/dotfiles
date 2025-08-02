@@ -1,0 +1,9 @@
+{{ if(eq.chezmoi.os "darwin") }}
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export VCPKG_ROOT="$HOME/vcpkg"
+{{ end }}
+
+alias ls="eza --icons --group-directories-first"
+alias ll="eza --icons --group-directories-first -lah"
+eval "$(starship init zsh)"
+
