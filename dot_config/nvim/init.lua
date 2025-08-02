@@ -1,44 +1,62 @@
-local opt = vim.opt
+-- VS Code Config
+if vim.g.vscode then
+  -- Minimal config for VSCode-Neovim
 
--- マウス有効化
-opt.mouse = 'a'
-opt.title = true
--- 全角文字表示設定
-opt.ambiwidth = 'double'
+  -- Use system clipboard (so yank/copy in VSCode copies to system)
+  vim.opt.clipboard:prepend { "unnamed", "unnamedplus" }
 
-opt.swapfile = false
-opt.backup = false
-opt.hidden = true
-opt.clipboard:append{'unnamedplus'}
+  -- Optional key mappings for consistency
+  vim.keymap.set("n", "Y", '"+y', { noremap = true, silent = true })
+  vim.keymap.set("v", "Y", '"+y', { noremap = true, silent = true })
+  vim.keymap.set("n", "<C-a>", "ggVG", { noremap = true, silent = true })
+  vim.keymap.set("i", "<C-a>", "<Esc>ggVG", { noremap = true, silent = true })
 
-opt.number = true
-opt.list = true
-opt.listchars = {tab = '>-', trail = '*', nbsp = '+'}
-opt.smartindent = true
-opt.visualbell = true
+  return
+end
 
-opt.showmatch = true
+-- Neovim
+vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
+vim.g.mapleader = " "
 
-opt.expandtab = true
-opt.tabstop = 4
-opt.shiftwidth = 4
+-- bootstrap lazy and all plugins
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
-opt.ignorecase = true
-opt.smartcase = true
-opt.wrapscan = true
+-- force for global virtual_text
+vim.diagnostic.config {
+  virtual_text = true,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+}
 
-opt.whichwrap = 'b,s,h,l,<,>,[,]'
-opt.backspace = 'start', 'eol', 'indent'
-opt.fileformats = 'unix', 'mac', 'dos'
+if not vim.uv.fs_stat(lazypath) then
+  local repo = "https://github.com/folke/lazy.nvim.git"
+  vim.fn.system { "git", "clone", "--filter=blob:none", repo, "--branch=stable", lazypath }
+end
 
---文字コード
-opt.encoding = 'utf-8'
-opt.fileencodings = 'utf-8', 'cp932'
+vim.opt.rtp:prepend(lazypath)
 
-opt.helplang = 'ja', 'en'
+local lazy_config = require "configs.lazy"
 
-opt.updatetime = 300
+-- load plugins
+require("lazy").setup({
+  {
+    "NvChad/NvChad",
+    lazy = false,
+    branch = "v2.5",
+    import = "nvchad.plugins",
+  },
 
-opt.showtabline = 2
+  { import = "plugins" },
+}, lazy_config)
 
-vim.api.nvim_set_keymap('i', 'jj', '<ESC>', { noremap = true, silent = true})
+-- load theme
+dofile(vim.g.base46_cache .. "defaults")
+dofile(vim.g.base46_cache .. "statusline")
+
+require "options"
+require "autocmds"
+
+vim.schedule(function()
+  require "mappings"
+end)

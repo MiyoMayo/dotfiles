@@ -13,11 +13,31 @@ ZSH_THEME=""
 # Plugins
 plugins=(
     git
-    zsh-autocomplete
+    {{ if(eq .chezmoi.os "linux") }}
+    archlinux
+    {{ end }}
     aliases
+    zsh-autocomplete
     zsh-syntax-highlighting
 )
 source $ZSH/oh-my-zsh.sh
+
+{{ if(eq .chezmoi.os "linux") }}
+source <(fzf --zsh)
+{{ end }}
+
+{{ if(eq .chezmoi.os "darwin" "linux") }}
+HISTFILE=~/.zsh_history
+{{ end }}
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+{{ if(eq .chezmoi.os "linux") }}
+export LC_TIME=ja_JP.UTF-8
+export LIBVIRT_DEFAULT_URI='qemu:///system'
+export PATH=$PATH:/home/ahmad/.spicetify
+{{ end }}
 
 # Aliases
 alias ls="eza --icons --group-directories-first"
