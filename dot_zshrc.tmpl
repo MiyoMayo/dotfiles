@@ -1,4 +1,4 @@
-{{ if(eq.chezmoi.os "darwin") }}
+{{ if(eq .chezmoi.os "darwin") }}
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export VCPKG_ROOT="$HOME/vcpkg"
 {{ end }}
