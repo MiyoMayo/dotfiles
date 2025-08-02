@@ -9,7 +9,7 @@ opt.ambiwidth = 'double'
 opt.swapfile = false
 opt.backup = false
 opt.hidden = true
-opt.clipboard:append({unnamedplus = true})
+opt.clipboard:append{'unnamedplus'}
 
 opt.number = true
 opt.list = true
