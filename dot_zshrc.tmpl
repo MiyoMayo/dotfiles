@@ -1,11 +1,27 @@
+{{ if(eq .chezmoi.os "darwin" "linux") }}
+ZSH="$HOME/.oh-my-zsh"
+{{ end }}
+
 {{ if(eq .chezmoi.os "darwin") }}
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
 export VCPKG_ROOT="$HOME/vcpkg"
 {{ end }}
 
+# Theme
+ZSH_THEME=""
+
+# Plugins
+plugins=(
+    git
+    zsh-autocomplete
+    aliases
+)
+source $ZSH/oh-my-zsh.sh
+
+# Aliases
 alias ls="eza --icons --group-directories-first"
 alias ll="eza --icons --group-directories-first -lah"
 alias chezmoi-cd="cd ~/.local/share/chezmoi"
 
+# Starship
 eval "$(starship init zsh)"
-
