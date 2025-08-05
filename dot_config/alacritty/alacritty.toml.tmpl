@@ -49,7 +49,9 @@ multiplier = 3
 [bell]
 animation = "Linear"
 duration = 20
+{{ if(eq chezmoi.os "linux" ) }}
 command = { program = "paplay", args = ["/usr/share/sounds/freedesktop/stereo/dialog-error.oga"] }
+{{ end }}
 
 ## SELECTION ------------------------------------------------------
 [selection]
