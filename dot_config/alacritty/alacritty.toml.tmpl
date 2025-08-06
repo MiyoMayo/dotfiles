@@ -11,7 +11,9 @@ WINIT_X11_SCALE_FACTOR = "1.0"
 [window]
 position = "None"
 dynamic_padding = true
+{{ if(eq .chezmoi.os "linux") }}
 decorations = "none"
+{{ end }}
 opacity = 1.0
 blur = false
 startup_mode = "Windowed"
@@ -49,7 +51,7 @@ multiplier = 3
 [bell]
 animation = "Linear"
 duration = 20
-{{ if(eq chezmoi.os "linux" ) }}
+{{ if(eq .chezmoi.os "linux" ) }}
 command = { program = "paplay", args = ["/usr/share/sounds/freedesktop/stereo/dialog-error.oga"] }
 {{ end }}
 
